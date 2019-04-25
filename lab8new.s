@@ -73,17 +73,31 @@ inname:
 search:
 	//print
 	mov r0, #1 @ stdout  1 = monitor
-	ldr r1, =txtselect @ input string
-	mov r2, #(ip_end-input) @ len
+	ldr r1, =txtselect 
+	mov r2, #13 @ len
 	mov r7, #4
 	svc 0
 	//input
 	mov r0, #0 @ stdin  0 = keyboard
-	ldr r1, =num @ address of input buffer
+	ldr r1, =num @ address of num
 	mov r2, #8 @ max. len. of input
 	mov r7, #3 @ read
 	svc 0
 	mov r5, r0 @ save no. of character
+/* open to read File */
+	mov r0, r4 @ file descriptor
+	ldr r1, #0 @ address of buffer to write
+//	mov r2, # @ length of data to write
+	mov r7, #4
+	svc 0
+
+	mov r0, r4 @ stdin  0 = keyboard
+	ldr r1, =fileread @ address of num
+	mov r2, #8 @ max. len. of input
+	mov r7, #3 @ read
+	svc 0
+	mov r5, r0 @ save no. of character
+
 
 
 exit: 
@@ -111,3 +125,5 @@ txtselect: .asciz "Enter number:"
 buffer: .asciz "                                                                                          \n"
 choice: .ascii ""
 num: .asciz ""
+fileread: .asciz ""
+filereadend:
